@@ -10,7 +10,8 @@
     "server": "node server/server.mjs",
     "demo-data": "node server/seed-demo.mjs",
     "test": "node test/openrouter.test.mjs && node test/hosted.test.mjs && node test/templates.test.mjs",
-    "package": "node scripts/package.mjs"
+    "package": "node scripts/package.mjs",
+    "package:friends": "node scripts/package.mjs --friends"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^1.3.0",

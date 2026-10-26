@@ -1,9 +1,9 @@
 {
-  "serverUrl": "",
+  "serverUrl": "https://cvtree-server.onrender.com",
   "analytics": true,
   "hostedAI": true,
   "ingestKey": "cvtree-ingest",
-  "githubClientId": "",
-  "publisherName": "",
+  "githubClientId": "Ov23liFVwW73sDm2vvyx",
+  "publisherName": "PlutonTech",
   "contactEmail": ""
 }

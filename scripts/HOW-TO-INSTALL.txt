@@ -1,0 +1,47 @@
+CV TREE: HOW TO INSTALL (about 2 minutes)
+==========================================
+
+CV Tree finds your best CV for any job posting, tailors it with AI, writes the
+cover letter and attaches your CV to the application. Your CVs stay in your
+browser.
+
+Works in Chrome, Edge and Brave on Windows, Mac and Linux.
+
+1. UNZIP this file into a folder you'll keep, for example
+   Documents\CV Tree. Don't delete or move that folder later:
+   the browser runs CV Tree from it.
+
+2. OPEN the extensions page. Type this in the address bar and press Enter:
+      Chrome or Brave:  chrome://extensions
+      Edge:             edge://extensions
+
+3. TURN ON "Developer mode" (a switch in the top-right corner;
+   in Edge it's on the left).
+
+4. CLICK "Load unpacked" and choose the folder from step 1
+   (the one that contains manifest.json).
+
+5. A welcome page opens. Follow it: upload your CVs (PDF or Word), and you're
+   ready. The AI is free (30 requests a day), no key needed.
+
+6. PIN IT: click the puzzle-piece icon next to the address bar, then the pin
+   next to CV Tree.
+
+USING IT
+--------
+Open any job posting (LinkedIn, Indeed, Greenhouse, Lever, Workday...).
+A green CV Tree button appears in the bottom-right corner with a score for
+your best CV. Click it to see your best CVs, tailor one, write a cover letter,
+or attach your CV to the application form.
+
+GOOD TO KNOW
+------------
+- The first AI request after a quiet spell can take up to a minute while the
+  free server wakes up. After that it's quick.
+- Chrome may sometimes say "Disable developer mode extensions". Click the X
+  or "Keep" to keep CV Tree.
+- Want unlimited AI? Get a free key at openrouter.ai and add it in
+  CV Tree > Settings > AI provider > My OpenRouter key.
+- To update: replace the folder's files with the new version, then click the
+  circular reload arrow on CV Tree's card at chrome://extensions.
+  Your CVs are kept.

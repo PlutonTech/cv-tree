@@ -28,14 +28,18 @@ const files = [];
 })(join(root, "extension"));
 
 mkdirSync(join(root, "dist"), { recursive: true });
-const out = join(root, "dist", `cv-tree-${manifest.version}.zip`);
-writeFileSync(out, zip(files.map(p => ({ name: relative(join(root, "extension"), p).replace(/\\/g, "/"), data: readFileSync(p) }))));
+// --friends: a zip to share directly (people load it with "Load unpacked"), with install steps inside.
+const friends = process.argv.includes("--friends");
+const out = join(root, "dist", `cv-tree-${manifest.version}${friends ? "-friends" : ""}.zip`);
+const entries = files.map(p => ({ name: relative(join(root, "extension"), p).replace(/\\/g, "/"), data: readFileSync(p) }));
+if (friends) entries.unshift({ name: "HOW-TO-INSTALL.txt", data: readFileSync(join(root, "scripts/HOW-TO-INSTALL.txt")) });
+writeFileSync(out, zip(entries));
 
 const kb = n => (n / 1024).toFixed(0) + " KB";
-console.log(`\nPackaged ${files.length} files -> ${relative(root, out)} (${kb(statSync(out).size)})`);
+console.log(`\nPackaged ${entries.length} files -> ${relative(root, out)} (${kb(statSync(out).size)})`);
 console.log(`Version ${manifest.version}. Bump "version" in extension/manifest.json before uploading an update.`);
 if (warnings.length) console.log("\nBefore publishing:\n" + warnings.map(w => "  - " + w).join("\n"));
-else console.log("Ready to upload at https://chrome.google.com/webstore/devconsole");
+else console.log(friends ? "Ready to share: send the zip; HOW-TO-INSTALL.txt inside explains the rest." : "Ready to upload at https://chrome.google.com/webstore/devconsole");
 
 /* ---------- a minimal zip writer (deflate), enough for the Web Store ---------- */
 function zip(entries) {

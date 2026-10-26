@@ -11,7 +11,7 @@ const store = { cvs, profile: { name: "Test", experience: "Dev at X" }, settings
 let connect;
 globalThis.chrome = {
   storage: { local: { get: async keys => Object.fromEntries([].concat(keys).filter(k => k in store).map(k => [k, store[k]])) }, onChanged: { addListener() {} } },
-  runtime: { onConnect: { addListener: f => { connect = f; } }, onMessage: { addListener() {} }, onInstalled: { addListener() {} }, onStartup: { addListener() {} }, getURL: p => p, getManifest: () => ({ version: "test" }) },
+  runtime: { onConnect: { addListener: f => { connect = f; } }, onMessage: { addListener() {} }, onInstalled: { addListener() {} }, onStartup: { addListener() {} }, getURL: p => p, getManifest: () => ({ version: "test" }), getPlatformInfo: async () => ({}) },
   action: { onClicked: { addListener() {} } },
   alarms: { onAlarm: { addListener() {} }, create() {} },
   tabs: { create() {} }, downloads: { download: async () => {} },

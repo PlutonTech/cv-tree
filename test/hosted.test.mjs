@@ -13,7 +13,7 @@ const store = {
 let connect;
 globalThis.chrome = {
   storage: { local: { get: async keys => Object.fromEntries([].concat(keys).filter(k => k in store).map(k => [k, store[k]])), set: async o => Object.assign(store, o) }, onChanged: { addListener() {} } },
-  runtime: { onConnect: { addListener: f => { connect = f; } }, onMessage: { addListener() {} }, onInstalled: { addListener() {} }, onStartup: { addListener() {} }, getURL: p => "chrome-extension://x/" + p, getManifest: () => ({ version: "t" }) },
+  runtime: { onConnect: { addListener: f => { connect = f; } }, onMessage: { addListener() {} }, onInstalled: { addListener() {} }, onStartup: { addListener() {} }, getURL: p => "chrome-extension://x/" + p, getManifest: () => ({ version: "t" }), getPlatformInfo: async () => ({}) },
   action: { onClicked: { addListener() {} } }, alarms: { onAlarm: { addListener() {} }, create() {} }, tabs: { create() {} }, downloads: { download: async () => {} },
 };
 const calls = [];

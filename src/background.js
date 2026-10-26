@@ -277,7 +277,10 @@ chrome.runtime.onConnect.addListener(port => {
   const ctl = new AbortController();
   let partial = "";
   const send = m => { if (m.type === "text") partial = m.text; try { port.postMessage(m); } catch {} };
-  port.onDisconnect.addListener(() => ctl.abort());
+  // Chrome stops an idle background worker after ~30 s, even mid-request. Free models can take longer,
+  // so touch an extension API every 20 s while this request is open to keep the worker alive.
+  const keepAlive = setInterval(() => chrome.runtime.getPlatformInfo().catch(() => {}), 20e3);
+  port.onDisconnect.addListener(() => { clearInterval(keepAlive); ctl.abort(); });
   // Where the request came from, for usage stats: the full app or the widget on a site.
   const from = port.sender?.url?.startsWith(chrome.runtime.getURL("")) ? "app" : "widget";
   port.onMessage.addListener(async msg => {
@@ -290,10 +293,12 @@ chrome.runtime.onConnect.addListener(port => {
       settings = data.settings;
       const result = await op(msg, data.settings, ctl.signal, data, send);
       send({ type: "done", result });
+      clearInterval(keepAlive);
     } catch (err) {
       const e = friendly(err);
       code = e.code || "unknown";
       send({ type: "error", code: e.code, message: e.message, text: partial || (typeof e.text === "string" ? e.text : "") });
+      clearInterval(keepAlive);
     }
     const provider = aiProvider(settings);
     enqueue({ type: "ai_request", at: started, props: {
