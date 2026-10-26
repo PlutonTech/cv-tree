@@ -72,21 +72,30 @@ function parseJson(text) {
 }
 
 async function orStructured(settings, prompt, schema, signal) {
-  const content = `${prompt}\n\nReply with a single JSON object only, no other text, matching this JSON Schema:\n${JSON.stringify(schema)}`;
+  const content = `${prompt}
+
+Reply with a single JSON object only, no other text, matching this JSON Schema:
+${JSON.stringify(schema)}`;
   const base = { messages: [{ role: "user", content }], max_tokens: 8000 };
-  let res;
-  try {
-    res = await orChat(settings, { ...base, response_format: { type: "json_schema", json_schema: { name: "result", strict: true, schema } } }, signal);
-  } catch (err) {
-    // Some free models don't support structured output: retry with the instruction alone.
-    if (err.code !== "bad_request") throw err;
-    res = await orChat(settings, base, signal);
+  let structured = true, lastErr;
+  // Free models (especially openrouter/free, which picks a model per request) sometimes answer in the wrong
+  // format; asking again usually lands a model that gets it right.
+  for (let attempt = 0; attempt < 3; attempt++) {
+    let res;
+    try {
+      res = await orChat(settings, structured ? { ...base, response_format: { type: "json_schema", json_schema: { name: "result", strict: true, schema } } } : base, signal);
+    } catch (err) {
+      // Some free models don't support structured output: retry with the instruction alone.
+      if (err.code !== "bad_request" || !structured) throw err;
+      structured = false; attempt--; continue;
+    }
+    const data = await res.json();
+    if (data.error) { lastErr = coded("api", data.error.message || "The model returned an error."); continue; }
+    const choice = data.choices?.[0];
+    if (choice?.finish_reason === "length") throw coded("truncated", "The model's answer was cut off. Try with fewer or shorter CVs.");
+    try { return parseJson(choice?.message?.content); } catch (err) { lastErr = err; }
   }
-  const data = await res.json();
-  if (data.error) throw coded("api", data.error.message || "The model returned an error.");
-  const choice = data.choices?.[0];
-  if (choice?.finish_reason === "length") throw coded("truncated", "The model's answer was cut off. Try with fewer or shorter CVs.");
-  return parseJson(choice?.message?.content);
+  throw aiProvider(settings) === "cvtree" ? coded("bad_json", "The free AI gave a garbled answer three times. Please try again in a moment.") : lastErr;
 }
 
 async function orStream(settings, prompt, signal, onText) {
