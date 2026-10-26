@@ -1,0 +1,46 @@
+/* CV and cover letter templates. Shared by the full app and the floating widget's previews.
+   Always drawn on white paper, like the exported PDF. */
+.cvt{color:#1b1b1b;line-height:1.5;min-height:1160px}
+.cvt h1{margin:0}
+.cvt section{margin-top:16px}
+.cvt ul{margin:3px 0;padding-left:18px}
+.cvt li{margin:1px 0}
+.cvt p{margin:3px 0}
+.cvt .entry{margin-top:9px}
+.cvt .eh{display:flex;justify-content:space-between;gap:14px;align-items:baseline}
+.cvt .eh span{white-space:nowrap;font-size:.9em}
+.cvt-classic{font-family:"Times New Roman",Times,Georgia,serif;padding:52px 64px;font-size:14px}
+.cvt-classic header{text-align:center}
+.cvt-classic h1{font-size:31px;font-weight:700}
+.cvt-classic .contact{color:#555;font-size:13px;margin:4px 0 0}
+.cvt-classic h2{font:700 14.5px "Times New Roman",Times,serif;letter-spacing:.14em;text-transform:uppercase;color:#1b1b1b;border-bottom:1px solid #1b1b1b;padding-bottom:3px;margin:0 0 6px}
+.cvt-classic .eh span{font-style:italic;color:#444}
+.cvt-modern{font-family:Helvetica,Arial,sans-serif;padding:48px 58px;font-size:13px;color:#2B3532}
+.cvt-modern header{border-bottom:2px solid #0E7A55;padding-bottom:12px}
+.cvt-modern h1{font-size:33px;color:#0E7A55;font-weight:700;letter-spacing:-.01em;line-height:1.1}
+.cvt-modern .contact{color:#6B7A74;font-size:12px;margin:6px 0 0}
+.cvt-modern h2{display:flex;align-items:center;gap:8px;font:700 12.5px Helvetica,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#0E7A55;margin:0 0 4px}
+.cvt-modern h2::before{content:"";width:7px;height:7px;background:#0E7A55;flex:none}
+.cvt-modern .eh b{color:#13201C}
+.cvt-modern .eh span{color:#6B7A74}
+.cvt-sidebar{display:grid;grid-template-columns:31% minmax(0,1fr);font-family:Helvetica,Arial,sans-serif;font-size:13px;color:#2B3532}
+.cvt-sidebar aside{background:#123B2E;color:#EAF6F0;padding:46px 26px;overflow-wrap:anywhere}
+.cvt-sidebar aside h1{color:#fff;font-size:26px;line-height:1.15}
+.cvt-sidebar .contact{list-style:none;padding:0;margin:14px 0 0;color:#D3EADF;font-size:11.5px;display:grid;gap:4px}
+.cvt-sidebar aside section{margin-top:24px}
+.cvt-sidebar aside h2{font:700 11.5px Helvetica,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#9FE0C2;margin:0 0 6px}
+.cvt-sidebar aside ul{list-style:none;padding:0;display:grid;gap:3px}
+.cvt-sidebar main{padding:46px 40px}
+.cvt-sidebar main section:first-child{margin-top:0}
+.cvt-sidebar main h2{position:relative;font:700 16px Helvetica,Arial,sans-serif;color:#123B2E;margin:0 0 10px;padding-bottom:7px}
+.cvt-sidebar main h2::after{content:"";position:absolute;left:0;bottom:0;width:34px;height:3px;background:#0E7A55}
+.cvt-sidebar .eh b{color:#13201C}
+.cvt-sidebar .eh span{color:#6B7A74}
+@media (max-width:640px){.cvt-classic,.cvt-modern{padding:28px 22px}.cvt-sidebar{grid-template-columns:minmax(0,1fr)}.cvt-sidebar main{padding:28px 22px}}
+.cvt.letter .lt-meta{margin-top:30px;display:grid;gap:12px}
+.cvt.letter .lt-meta p{margin:0}
+.cvt.letter .lt-date{color:#666}
+.cvt.letter .lt-body{margin-top:20px}
+.cvt.letter .lt-body p{margin:0 0 13px;line-height:1.62}
+.cvt-classic.letter{font-size:15px}
+.cvt-sidebar.letter main .lt-meta{margin-top:0}

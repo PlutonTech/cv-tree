@@ -1,0 +1,13 @@
+node_modules/
+server/*.db
+server/*.db-wal
+server/*.db-shm
+dist/
+server/.env.local
+# build outputs (npm run build recreates them)
+extension/background.js
+extension/content.js
+extension/app.js
+extension/pdfgen.js
+extension/pdf.worker.min.mjs
+extension/icons/

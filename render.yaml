@@ -1,0 +1,35 @@
+# Render blueprint for the CV Tree server (usage stats, admin dashboard, free hosted AI, privacy policy).
+# On render.com: New > Blueprint > pick this repo. Render asks for the values marked sync: false.
+# The persistent disk needs a paid instance (Starter); without a disk, the database is wiped on every deploy.
+services:
+  - type: web
+    name: cvtree-server
+    runtime: node
+    plan: starter
+    rootDir: server
+    buildCommand: "true"
+    startCommand: node server.mjs
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: "24"
+      - key: DB_PATH
+        value: /var/data/cvtree.db
+      - key: ADMIN_TOKEN          # your dashboard password, 12+ characters
+        sync: false
+      - key: OPENROUTER_API_KEY   # a normal OpenRouter API key with credits; turns on the free AI
+        sync: false
+      - key: PUBLISHER_NAME       # shown on the privacy policy
+        sync: false
+      - key: CONTACT_EMAIL        # shown on the privacy policy
+        sync: false
+      - key: HOSTED_DAILY_LIMIT
+        value: "30"
+      - key: HOSTED_DAILY_BUDGET_USD
+        value: "3"
+      - key: INGEST_KEY
+        value: cvtree-ingest
+    disk:
+      name: cvtree-data
+      mountPath: /var/data
+      sizeGB: 1

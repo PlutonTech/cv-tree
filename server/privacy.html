@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CV Tree Privacy Policy</title>
+<style>
+:root{--bg:#F6F8F7;--surface:#fff;--ink:#10231C;--muted:#5d6c66;--line:#E4EAE7;--accent:#0E7A55;color-scheme:light}
+@media (prefers-color-scheme:dark){:root{--bg:#0D1412;--surface:#131C19;--ink:#E6EEEA;--muted:#93A39D;--line:#24322D;--accent:#3DBE8B;color-scheme:dark}}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 "Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:720px;margin:0 auto;padding:48px max(20px,4vw) 80px}
+h1{font-size:32px;line-height:1.2;margin:0 0 6px;letter-spacing:-.02em}
+h2{font-size:19px;margin:36px 0 8px}
+p,li{color:var(--ink)}
+.meta{color:var(--muted);margin:0 0 28px}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px 20px;margin:16px 0}
+a{color:var(--accent)}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:10px 0}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--muted);font-size:13px}
+.wrap{overflow-x:auto}
+</style>
+</head>
+<body>
+<main>
+<h1>CV Tree Privacy Policy</h1>
+<p class="meta">Last updated {{UPDATED}} · Published by {{PUBLISHER}}</p>
+
+<div class="box"><b>In short:</b> your CVs, cover letters and profile stay in your browser. Text is sent to an AI provider only when you click an AI button. Anonymous usage statistics (which features are used, never your content) help improve CV Tree, and you can turn them off in Settings.</div>
+
+<h2>What CV Tree stores, and where</h2>
+<p>Everything you put into CV Tree (your CVs and uploaded files, cover letters, profile, work history, skills, projects, settings and any API keys you add) is stored only in your browser's extension storage on your device. We don't have a copy. Uninstalling the extension deletes it. You can export a backup from Settings at any time.</p>
+
+<h2>When text leaves your device</h2>
+<div class="wrap"><table>
+<thead><tr><th>When</th><th>What is sent</th><th>To whom</th></tr></thead>
+<tbody>
+<tr><td>You click an AI action (rank CVs, write or tailor a CV, write a cover letter, format an upload, import LinkedIn)</td><td>The job description and the CV, profile or page text that action needs</td><td>The AI provider you chose. With <b>CV Tree free AI</b>, the request passes through our server to OpenRouter, which runs it on Anthropic's Claude; our server does not store the text, only how many tokens it used. With your own key, it goes directly from your browser to OpenRouter or Anthropic.</td></tr>
+<tr><td>You connect GitHub</td><td>A sign-in request; then your repository names, descriptions and READMEs are read</td><td>GitHub. The access token stays in your browser.</td></tr>
+<tr><td>Usage statistics are on (you can turn them off in Settings)</td><td>Anonymous events: which features you use, AI model names, response times and error codes, job-site domains (like linkedin.com), template names, extension version, browser and language, under a random install ID</td><td>Our server. Never your CVs, letters, name, contact details, profile, job descriptions or API keys. We don't store IP addresses.</td></tr>
+</tbody></table></div>
+
+<h2>What CV Tree reads on websites</h2>
+<p>To show the CV Tree button on job postings, the extension checks pages you visit for a job posting. This check happens on your device. Nothing from the page is sent anywhere unless you use an AI action on it. On LinkedIn, the profile page text is read only when you click "Import this profile". When you click "Attach to this page", CV Tree puts your chosen CV into that page's upload field; you still submit the form yourself.</p>
+
+<h2>Third parties</h2>
+<p>AI requests are processed by OpenRouter and, depending on the model, Anthropic or the provider of the model you chose, under their own privacy policies. GitHub sign-in is handled by GitHub. We don't sell data, use it for advertising, or share it with anyone else.</p>
+
+<h2>Free AI limits and logs</h2>
+<p>For the free AI we keep, per random install ID and day, the number of requests, tokens used and cost, so we can apply daily limits and keep the service affordable. These records are kept for up to 12 months.</p>
+
+<h2>Usage statistics retention</h2>
+<p>Anonymous usage events are kept for up to 24 months and then deleted. Turning statistics off stops sending immediately and deletes anything not yet sent.</p>
+
+<h2>Your choices</h2>
+<ul>
+<li>Turn off usage statistics in Settings › Usage statistics.</li>
+<li>Use your own AI key instead of the free AI, in Settings › AI provider.</li>
+<li>Delete your data by removing it in the app or uninstalling the extension.</li>
+<li>To ask about or delete the anonymous records for your install, send us the install ID shown in Settings.</li>
+</ul>
+
+<h2>Children</h2>
+<p>CV Tree isn't directed at children under 16.</p>
+
+<h2>Changes</h2>
+<p>If this policy changes, we'll update the date above and, for significant changes, tell you in the extension.</p>
+
+<h2>Contact</h2>
+<p>{{CONTACT}}</p>
+</main>
+</body>
+</html>

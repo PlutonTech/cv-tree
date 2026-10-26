@@ -1,0 +1,9 @@
+{
+  "serverUrl": "",
+  "analytics": true,
+  "hostedAI": true,
+  "ingestKey": "cvtree-ingest",
+  "githubClientId": "",
+  "publisherName": "",
+  "contactEmail": ""
+}

@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CV Tree Usage</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: header bar, KPI row, then a two-column grid of chart cards; tables full width at the bottom. */
+:root{
+  --bg:#F6F8F7; --surface:#FFFFFF; --surface-2:#F9FBFA; --line:#E4EAE7; --grid:#EEF2F0;
+  --ink:#10231C; --ink-2:#2B3B35; --muted:#66756F;
+  --series:#0E7A55; --series-soft:#E8F4EE;
+  --good:#2E7D4F; --warn:#B7791F; --bad:#D9483F; --warn-soft:#FDF3E1; --bad-soft:#FDECEA; --good-soft:#E6F4EC;
+  --font:"Plus Jakarta Sans",ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif; color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0D1412; --surface:#131C19; --surface-2:#17221E; --line:#24322D; --grid:#1D2925;
+  --ink:#E6EEEA; --ink-2:#C9D6D0; --muted:#8FA19A;
+  --series:#3DBE8B; --series-soft:#163027;
+  --good:#5CC48A; --warn:#E0A63A; --bad:#F07A72; --warn-soft:#33281A; --bad-soft:#3A1F1D; --good-soft:#16301F; color-scheme:dark}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 var(--font);word-spacing:.04em}
+a{color:var(--series)}
+.wrap{max-width:1320px;margin:0 auto;padding:0 max(16px,3vw)}
+header.top{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 0}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+.brand svg{width:30px;height:30px;color:var(--series)}
+.brand span{font-weight:500;color:var(--muted);font-size:14px}
+.grow{flex:1}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px;background:var(--surface)}
+.seg button{border:none;background:none;padding:6px 12px;border-radius:7px;font:600 13px var(--font);color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--series-soft);color:var(--series)}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:9px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:700 13px var(--font);text-decoration:none;cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+:focus-visible{outline:2px solid var(--series);outline-offset:2px}
+main{padding:22px 0 60px;display:grid;gap:20px}
+main>*,#content{min-width:0}
+#content{display:grid;gap:20px}
+.meta{color:var(--muted);font-size:12.5px;margin:0}
+h1{font-size:26px;margin:0;letter-spacing:-.02em}
+h2{font-size:15px;margin:0;font-weight:700}
+.sub{color:var(--muted);font-size:12.5px;margin:2px 0 0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 20px;min-width:0}
+.card-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:12px}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+@media (max-width:1150px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:620px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{padding:16px 18px}
+.kpi .label{font-size:12.5px;color:var(--muted);font-weight:600}
+.kpi .value{font-size:28px;font-weight:800;letter-spacing:-.02em;font-variant-numeric:tabular-nums;line-height:1.15;margin-top:4px}
+.kpi .value small{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:0}
+.kpi .delta{font-size:12px;margin-top:4px;color:var(--muted);font-variant-numeric:tabular-nums}
+.delta .up{color:var(--good);font-weight:700}.delta .down{color:var(--bad);font-weight:700}
+.trio{display:flex;gap:14px;margin-top:6px}
+.trio div{display:grid}
+.trio b{font-size:20px;font-variant-numeric:tabular-nums}
+.trio span{font-size:11.5px;color:var(--muted);font-weight:600}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:980px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.chart{position:relative;width:100%}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.axis text{fill:var(--muted);font:11px var(--font)}
+.gridline{stroke:var(--grid);stroke-width:1}
+.hbars{display:grid;gap:9px}
+.hbar{display:grid;grid-template-columns:minmax(110px,38%) minmax(0,1fr) auto;align-items:center;gap:10px;font-size:13px}
+.hbar .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-2)}
+.hbar .track{height:14px;border-radius:0 4px 4px 0;background:transparent;position:relative}
+.hbar .fill{height:100%;border-radius:0 4px 4px 0;background:var(--series);min-width:2px}
+.hbar .num{font-variant-numeric:tabular-nums;font-weight:700;min-width:3.5em;text-align:right}
+.hbar .num small{color:var(--muted);font-weight:500}
+.hbar:hover .fill{filter:brightness(1.12)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-weight:700;color:var(--muted);font-size:12px;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--grid);white-space:nowrap}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr:last-child td{border-bottom:none}
+tbody tr.click{cursor:pointer}
+tbody tr.click:hover td{background:var(--surface-2)}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:12px}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:2px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.pill.good{background:var(--good-soft);color:var(--good)}.pill.warn{background:var(--warn-soft);color:var(--warn)}.pill.bad{background:var(--bad-soft);color:var(--bad)}
+.heat td.cell{text-align:center;font-variant-numeric:tabular-nums;font-weight:600;border:2px solid var(--surface);border-radius:6px}
+.empty{padding:26px;text-align:center;color:var(--muted)}
+.big-empty{padding:60px 20px;text-align:center;color:var(--muted)}
+.big-empty h2{color:var(--ink);font-size:18px;margin-bottom:6px}
+.feed{display:grid;gap:2px;max-height:420px;overflow:auto}
+.feed div{display:grid;grid-template-columns:72px 90px minmax(0,1fr);gap:10px;padding:6px 4px;border-bottom:1px solid var(--grid);font-size:12.5px}
+.feed time{color:var(--muted);font-variant-numeric:tabular-nums}
+.feed .who{font-family:ui-monospace,Consolas,monospace;color:var(--muted);font-size:11.5px}
+.feed .what{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#tip{position:fixed;z-index:50;pointer-events:none;background:var(--ink);color:var(--bg);padding:8px 10px;border-radius:8px;font-size:12.5px;line-height:1.45;box-shadow:0 8px 24px -10px rgba(0,0,0,.4);max-width:260px}
+#tip b{display:block;margin-bottom:2px}
+#tip .row{display:flex;justify-content:space-between;gap:14px;font-variant-numeric:tabular-nums}
+dialog{border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);width:min(760px,calc(100vw - 32px));max-height:calc(100vh - 48px);padding:0}
+dialog::backdrop{background:rgba(5,15,10,.45)}
+.dlg-head{display:flex;justify-content:space-between;align-items:center;padding:18px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface)}
+.dlg-body{padding:16px 20px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.facts div{background:var(--surface-2);border-radius:10px;padding:10px 12px}
+.facts span{display:block;font-size:11.5px;color:var(--muted);font-weight:600}
+.facts b{font-variant-numeric:tabular-nums}
+.note{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap bar">
+  <div class="brand"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 3 3.5 27h25z" stroke-width="2.4"/><path d="M16 11 9.5 23h13z" stroke-width="2.2"/><path d="M16 17v10" stroke-width="2.4"/></svg>CV Tree <span>Usage</span></div>
+  <div class="grow"></div>
+  <div class="seg" role="group" aria-label="Date range"><button data-days="7" type="button">7 days</button><button data-days="30" type="button">30 days</button><button data-days="90" type="button">90 days</button></div>
+  <button class="btn" id="refresh" type="button">Refresh</button>
+  <a class="btn" href="/admin/api/export.csv">Export CSV</a>
+  <a class="btn" href="/admin/logout">Sign out</a>
+</div></header>
+
+<main class="wrap" id="main">
+  <div><h1 id="title">Usage</h1><p class="meta" id="meta">Loading…</p></div>
+  <div id="content"></div>
+</main>
+<div id="tip" hidden></div>
+
+<dialog id="clientDlg"><div class="dlg-head"><h2 id="clientTitle">Client</h2><button class="btn" id="clientClose" type="button">Close</button></div><div class="dlg-body" id="clientBody"></div></dialog>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const fmt = n => n == null ? "–" : Number(n).toLocaleString();
+const pct = (n, d = 0) => n == null ? "–" : (n * 100).toFixed(d) + "%";
+const short = id => String(id).slice(0, 8);
+const dshort = d => new Date(d + "T00:00:00Z").toLocaleDateString(undefined, { day: "numeric", month: "short", timeZone: "UTC" });
+const ago = t => { const m = Math.round((Date.now() - t) / 60000); return m < 1 ? "now" : m < 60 ? m + "m ago" : m < 1440 ? Math.round(m / 60) + "h ago" : Math.round(m / 1440) + "d ago"; };
+const secs = ms => ms == null ? "–" : (ms / 1000).toFixed(ms < 10000 ? 1 : 0) + " s";
+
+let days = 30, data = null, allClients = false;
+try { days = Number(localStorage.getItem("cvtree-days")) || 30; } catch {}
+
+/* ---------- tooltip ---------- */
+const tip = $("#tip");
+function showTip(e, html) {
+  tip.innerHTML = html; tip.hidden = false;
+  const r = tip.getBoundingClientRect();
+  tip.style.left = Math.min(e.clientX + 14, innerWidth - r.width - 8) + "px";
+  tip.style.top = Math.max(8, e.clientY - r.height - 12) + "px";
+}
+const hideTip = () => { tip.hidden = true; };
+
+/* ---------- charts ---------- */
+const niceMax = v => { if (v <= 4) return 4; const p = 10 ** Math.floor(Math.log10(v)); const m = v / p; return (m <= 2 ? 2 : m <= 5 ? 5 : 10) * p; };
+
+// Line + soft area over days, crosshair tooltip showing the day's numbers.
+function lineChart(el, rows, key, tipRows) {
+  const W = el.clientWidth || 600, H = 220, L = 36, R = 12, T = 10, B = 26;
+  const max = niceMax(Math.max(1, ...rows.map(r => r[key])));
+  const x = i => L + (rows.length === 1 ? 0 : i * (W - L - R) / (rows.length - 1));
+  const y = v => T + (H - T - B) * (1 - v / max);
+  const ticks = [0, max / 2, max];
+  const pts = rows.map((r, i) => `${x(i).toFixed(1)},${y(r[key]).toFixed(1)}`);
+  const every = Math.ceil(rows.length / 7);
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(key)} per day">
+    <g class="axis">${ticks.map(t => `<line class="gridline" x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}"/><text x="${L - 8}" y="${y(t) + 4}" text-anchor="end">${fmt(t)}</text>`).join("")}
+    ${rows.map((r, i) => i % every === 0 || i === rows.length - 1 ? `<text x="${x(i)}" y="${H - 6}" text-anchor="middle">${dshort(r.day)}</text>` : "").join("")}</g>
+    <path d="M${pts[0].split(",")[0]},${y(0)} L${pts.join(" L")} L${x(rows.length - 1)},${y(0)} Z" fill="var(--series)" opacity=".12"/>
+    <polyline points="${pts.join(" ")}" fill="none" stroke="var(--series)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${x(rows.length - 1)}" cy="${y(rows.at(-1)[key])}" r="4" fill="var(--series)" stroke="var(--surface)" stroke-width="2"/>
+    <line id="xh" y1="${T}" y2="${H - B}" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3" opacity="0"/>
+    <circle id="xd" r="4.5" fill="var(--series)" stroke="var(--surface)" stroke-width="2" opacity="0"/>
+    <rect x="${L}" y="${T}" width="${W - L - R}" height="${H - T - B}" fill="transparent" id="hit"/></svg>`;
+  const svg = el.querySelector("svg"), xh = svg.querySelector("#xh"), xd = svg.querySelector("#xd");
+  svg.querySelector("#hit").addEventListener("pointermove", e => {
+    const b = svg.getBoundingClientRect(), px = (e.clientX - b.left) * W / b.width;
+    const i = Math.max(0, Math.min(rows.length - 1, Math.round((px - L) / ((W - L - R) / Math.max(1, rows.length - 1)))));
+    xh.setAttribute("x1", x(i)); xh.setAttribute("x2", x(i)); xh.setAttribute("opacity", 1);
+    xd.setAttribute("cx", x(i)); xd.setAttribute("cy", y(rows[i][key])); xd.setAttribute("opacity", 1);
+    showTip(e, `<b>${dshort(rows[i].day)}</b>${tipRows.map(([k, l]) => `<div class="row"><span>${l}</span><span>${fmt(rows[i][k])}</span></div>`).join("")}`);
+  });
+  svg.querySelector("#hit").addEventListener("pointerleave", () => { xh.setAttribute("opacity", 0); xd.setAttribute("opacity", 0); hideTip(); });
+}
+
+// Vertical bars per day, with a hover tooltip per bar.
+function colChart(el, rows, key, label) {
+  const W = el.clientWidth || 600, H = 200, L = 36, R = 8, T = 10, B = 26;
+  const max = niceMax(Math.max(1, ...rows.map(r => r[key])));
+  const step = (W - L - R) / rows.length, bw = Math.max(2, step - 2);
+  const y = v => T + (H - T - B) * (1 - v / max);
+  const every = Math.ceil(rows.length / 7);
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(label)} per day">
+    <g class="axis">${[0, max / 2, max].map(t => `<line class="gridline" x1="${L}" x2="${W - R}" y1="${y(t)}" y2="${y(t)}"/><text x="${L - 8}" y="${y(t) + 4}" text-anchor="end">${fmt(t)}</text>`).join("")}
+    ${rows.map((r, i) => i % every === 0 ? `<text x="${L + i * step + step / 2}" y="${H - 6}" text-anchor="middle">${dshort(r.day)}</text>` : "").join("")}</g>
+    ${rows.map((r, i) => { const h = Math.max(r[key] ? 2 : 0, (H - T - B) - (y(r[key]) - T)); const r4 = Math.min(4, bw / 2, h);
+      const x0 = L + i * step + 1, y0 = y(0) - h;
+      return `<g data-i="${i}"><rect x="${x0 - 1}" y="${T}" width="${step}" height="${H - T - B}" fill="transparent"/>${h ? `<path d="M${x0},${y0 + h} V${y0 + r4} Q${x0},${y0} ${x0 + r4},${y0} H${x0 + bw - r4} Q${x0 + bw},${y0} ${x0 + bw},${y0 + r4} V${y0 + h} Z" fill="var(--series)"/>` : ""}</g>`; }).join("")}</svg>`;
+  el.querySelectorAll("g[data-i]").forEach(g => {
+    const r = rows[g.dataset.i];
+    g.addEventListener("pointermove", e => showTip(e, `<b>${dshort(r.day)}</b><div class="row"><span>${esc(label)}</span><span>${fmt(r[key])}</span></div>`));
+    g.addEventListener("pointerleave", hideTip);
+  });
+}
+
+// Horizontal bars as HTML rows (label, bar, value). rows: [{label, value, note?, tip?}]
+function hbars(rows, { max, valueFmt = fmt, empty = "No data yet." } = {}) {
+  if (!rows.length || rows.every(r => !r.value)) return `<p class="empty">${empty}</p>`;
+  const m = max ?? Math.max(...rows.map(r => r.value));
+  return `<div class="hbars">${rows.map((r, i) => `<div class="hbar" data-tip="${esc(r.tip || "")}" data-label="${esc(r.label)}">
+    <span class="name" title="${esc(r.label)}">${esc(r.label)}</span>
+    <span class="track"><span class="fill" style="display:block;width:${m ? (r.value / m * 100).toFixed(1) : 0}%"></span></span>
+    <span class="num">${valueFmt(r.value)}${r.note ? ` <small>${esc(r.note)}</small>` : ""}</span></div>`).join("")}</div>`;
+}
+document.addEventListener("pointermove", e => {
+  const h = e.target.closest?.(".hbar[data-tip]");
+  if (h && h.dataset.tip) showTip(e, `<b>${esc(h.dataset.label)}</b>${h.dataset.tip}`);
+  else if (!e.target.closest?.("svg")) hideTip();
+});
+
+const okPill = (ok, n) => { if (!n) return "–"; const r = ok / n; return `<span class="pill ${r >= .95 ? "good" : r >= .8 ? "warn" : "bad"}">${r >= .95 ? "✓" : r >= .8 ? "!" : "✕"} ${pct(r)}</span>`; };
+const delta = (now, prev, goodUp = true) => {
+  if (prev == null || (!now && !prev)) return `<div class="delta">No change</div>`;
+  if (!prev) return `<div class="delta"><span class="up">New</span> this period</div>`;
+  const d = (now - prev) / prev, up = d >= 0, good = up === goodUp;
+  return `<div class="delta"><span class="${good ? "up" : "down"}">${up ? "▲" : "▼"} ${pct(Math.abs(d))}</span> vs previous ${days} days</div>`;
+};
+const EV = {
+  ai_request: p => `AI ${p.op}${p.ok ? "" : ` failed (${p.code})`} · ${p.model || p.provider} · ${secs(p.ms)}`,
+  cv_added: p => `Added a CV (${p.source})`, pdf_download: p => `Downloaded a ${p.kind} PDF (${p.template}) from the ${p.from}`,
+  cv_attach: p => p.ok ? `Attached a CV on ${p.host}` : `Attach failed on ${p.host}${p.reason ? ` (${p.reason})` : ""}`,
+  cv_drag: p => `Dragged a CV on ${p.host}`, job_detected: p => `Job found on ${p.host}`, widget_open: p => `Opened the quick menu${p.host ? " on " + p.host : ""}`,
+  match_keyword: p => `Keyword match (${p.cvs} CVs, top ${p.top})`, match_paste: p => `Matched a pasted job`, install: () => "Installed", update: p => `Updated from ${p.from}`,
+  github_import: p => `Imported ${p.repos} GitHub repos`, linkedin_saved: () => "Saved LinkedIn profile", template_change: p => `Switched to ${p.template}`,
+  ai_settings: p => `AI set to ${p.model}`, widget_tab: p => `Quick menu tab: ${p.tab}`, letter_start: () => "Started a cover letter from the widget",
+};
+const describe = e => (EV[e.type] || (() => e.type.replace(/_/g, " ")))(e.props || {});
+
+/* ---------- page ---------- */
+async function load() {
+  $("#meta").textContent = "Loading…";
+  document.querySelectorAll(".seg button").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.days) === days)));
+  const res = await fetch(`/admin/api/summary?days=${days}`);
+  if (res.status === 401) { location.reload(); return; }
+  data = await res.json();
+  render();
+}
+
+function render() {
+  const d = data, k = d.kpis;
+  $("#title").textContent = `Usage, last ${d.days} days`;
+  $("#meta").textContent = `${dshort(d.start)} – ${dshort(d.end)} (UTC) · updated ${new Date(d.generated).toLocaleTimeString()} · ${fmt(k.events)} events`;
+  const h = d.hostedAi;
+  if (!k.totalInstalls && !h?.period.requests) {
+    $("#content").innerHTML = `<div class="card big-empty"><h2>No usage data yet</h2><p>Once people use a CV Tree build that points at this server (and have usage stats on), their activity shows up here.</p></div>`;
+    return;
+  }
+  const f = d.funnel, top = f[0].n || 1;
+  const sentCvs = k.pdfDownloads + k.attaches;
+  $("#content").innerHTML = `
+  <section class="kpis" aria-label="Key numbers">
+    <div class="card kpi"><div class="label">Active users</div><div class="value">${fmt(k.active)}</div>${delta(k.active, k.activePrev)}</div>
+    <div class="card kpi"><div class="label">Now active</div><div class="trio"><div><b>${fmt(k.dau)}</b><span>today</span></div><div><b>${fmt(k.wau)}</b><span>7 days</span></div><div><b>${fmt(k.mau)}</b><span>30 days</span></div></div><div class="delta">${k.mau ? pct(k.dau / k.mau) : "–"} daily / monthly</div></div>
+    <div class="card kpi"><div class="label">New installs</div><div class="value">${fmt(k.newInstalls)} <small>of ${fmt(k.totalInstalls)}</small></div>${delta(k.newInstalls, k.newInstallsPrev)}</div>
+    <div class="card kpi"><div class="label">AI requests</div><div class="value">${fmt(k.aiRequests)}</div>${delta(k.aiRequests, k.aiRequestsPrev)}</div>
+    <div class="card kpi"><div class="label">AI success · avg time</div><div class="value">${pct(k.aiSuccess)} <small>${secs(k.aiAvgMs)}</small></div><div class="delta">${k.aiSuccess == null ? "No AI requests" : k.aiSuccess >= .95 ? "Healthy" : "Check the errors table"}</div></div>
+    <div class="card kpi"><div class="label">CVs sent out</div><div class="value">${fmt(sentCvs)}</div><div class="delta">${fmt(k.pdfDownloads)} PDFs · ${fmt(k.attaches)} attached</div></div>
+  </section>
+
+  ${hostedSection(h)}
+
+  <section class="grid2">
+    <div class="card"><div class="card-head"><div><h2>Active users per day</h2><p class="sub">People who used CV Tree at least once that day</p></div></div><div class="chart" id="chActive"></div></div>
+    <div class="card"><div class="card-head"><div><h2>New installs per day</h2><p class="sub">First time we heard from an install</p></div></div><div class="chart" id="chInstalls"></div></div>
+  </section>
+
+  <section class="grid2">
+    <div class="card"><div class="card-head"><div><h2>What people use</h2><p class="sub">People who used each feature, with total uses</p></div></div>
+      ${hbars(d.features.filter(x => x.uses).map(x => ({ label: x.label, value: x.users, note: `${fmt(x.uses)} uses`, tip: `<div class="row"><span>People</span><span>${fmt(x.users)}</span></div><div class="row"><span>Uses</span><span>${fmt(x.uses)}</span></div>` })), { empty: "No feature use in this period." })}</div>
+    <div class="card"><div class="card-head"><div><h2>How far new users get</h2><p class="sub">Installs in this period that reached each step</p></div></div>
+      ${hbars(f.map(s => ({ label: s.step, value: s.n, note: pct(s.n / top), tip: `<div class="row"><span>People</span><span>${fmt(s.n)}</span></div><div class="row"><span>Of installs</span><span>${pct(s.n / top)}</span></div>` })), { max: top, empty: "No new installs in this period." })}</div>
+  </section>
+
+  <section class="grid2">
+    <div class="card"><div class="card-head"><div><h2>AI usage by model</h2><p class="sub">Excludes key checks</p></div></div>
+      ${d.aiModels.length ? `<div class="table-wrap"><table><thead><tr><th>Model</th><th>Provider</th><th class="num">Requests</th><th class="num">People</th><th>Success</th><th class="num">Avg time</th></tr></thead><tbody>
+      ${d.aiModels.map(m => `<tr><td class="mono">${esc(m.model)}</td><td>${esc(m.provider)}</td><td class="num">${fmt(m.requests)}</td><td class="num">${fmt(m.users)}</td><td>${okPill(m.ok, m.requests)}</td><td class="num">${secs(m.avgMs)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">No AI requests in this period.</p>`}</div>
+    <div class="card"><div class="card-head"><div><h2>AI usage by task</h2><p class="sub">Where requests come from: the full app or the quick menu</p></div></div>
+      ${d.aiOps.length ? `<div class="table-wrap"><table><thead><tr><th>Task</th><th class="num">Requests</th><th class="num">From quick menu</th><th>Success</th><th class="num">Avg time</th></tr></thead><tbody>
+      ${d.aiOps.map(o => `<tr><td>${esc({ rank: "Rank CVs", generate: "Write / tailor CV", letter: "Cover letter", format: "Format upload", linkedin: "LinkedIn import" }[o.op] || o.op)}</td><td class="num">${fmt(o.requests)}</td><td class="num">${pct(o.fromWidget / o.requests)}</td><td>${okPill(o.ok, o.requests)}</td><td class="num">${secs(o.avgMs)}</td></tr>`).join("")}</tbody></table></div>` : `<p class="empty">No AI requests in this period.</p>`}</div>
+  </section>
+
+  <section class="card"><div class="card-head"><div><h2>AI errors</h2><p class="sub">What went wrong, and for how many people</p></div></div>
+    ${d.errors.length ? `<div class="table-wrap"><table><thead><tr><th>Error</th><th>Task</th><th class="num">Times</th><th class="num">People</th><th>Last seen</th></tr></thead><tbody>
+    ${d.errors.map(e => `<tr><td><span class="pill bad">✕ ${esc(e.code)}</span></td><td>${esc(e.op)}</td><td class="num">${fmt(e.n)}</td><td class="num">${fmt(e.users)}</td><td>${ago(e.last)}</td></tr>`).join("")}</tbody></table></div>
+    <p class="note">Common codes: auth = bad or management API key · credits = model needs credits · rate_limited = free-model limit · privacy = OpenRouter privacy setting · bad_json = model answered in the wrong format.</p>` : `<p class="empty"><span class="pill good">✓ No errors</span> in this period.</p>`}</section>
+
+  <section class="grid2">
+    <div class="card"><div class="card-head"><div><h2>Job sites</h2><p class="sub">Where the quick menu found job postings</p></div></div>
+      ${hbars(d.sites.map(s => ({ label: s.host, value: s.users, note: `${fmt(s.jobs)} jobs`, tip: `<div class="row"><span>People</span><span>${fmt(s.users)}</span></div><div class="row"><span>Postings seen</span><span>${fmt(s.jobs)}</span></div>` })), { empty: "No job postings detected yet." })}</div>
+    <div class="card"><div class="card-head"><div><h2>Where CVs come from</h2><p class="sub">CVs added in this period</p></div></div>
+      ${hbars(d.cvSources.map(s => ({ label: { pdf: "PDF upload", docx: "Word upload", text: "Text file", manual: "Typed or pasted", generated: "Written by AI", example: "Examples" }[s.source] || s.source || "Unknown", value: s.n })), { empty: "No CVs added in this period." })}
+      <h2 style="margin:20px 0 12px">PDF templates</h2>
+      ${hbars(d.templates.map(t => ({ label: `${(t.template || "?")[0].toUpperCase() + (t.template || "?").slice(1)} · ${t.kind === "letter" ? "letter" : "CV"}`, value: t.n })), { empty: "No PDFs downloaded in this period." })}</div>
+  </section>
+
+  <section class="grid2">
+    <div class="card"><div class="card-head"><div><h2>Weekly retention</h2><p class="sub">Of people who installed each week, the share active in later weeks</p></div></div>
+      <div class="table-wrap"><table class="heat"><thead><tr><th>Install week</th><th class="num">People</th><th class="num">Week 1</th><th class="num">Week 2</th><th class="num">Week 3</th><th class="num">Week 4</th></tr></thead><tbody>
+      ${d.retention.map(r => `<tr><td>${dshort(r.week)}</td><td class="num">${fmt(r.size)}</td>${r.weeks.map(v => v == null || !r.size ? `<td class="cell" style="color:var(--muted)">–</td>`
+        : `<td class="cell" style="background:color-mix(in srgb,var(--series) ${Math.round(8 + v * 80)}%,var(--surface));color:${v > .45 ? "#fff" : "var(--ink)"}">${pct(v)}</td>`).join("")}</tr>`).join("")}</tbody></table></div></div>
+    <div class="card"><div class="card-head"><div><h2>Pages people open</h2><p class="sub">Full-app pages, by visits</p></div></div>
+      ${hbars(d.views.map(v => ({ label: { dashboard: "Dashboard", cvs: "My CVs", letters: "Cover Letters", match: "Match a Job", cv: "A CV", letter: "A letter", profile: "Experience & Projects", hub: "Link Hub", settings: "Settings" }[v.view] || v.view, value: v.n, note: `${fmt(v.users)} people` })), { empty: "No page views in this period." })}
+      <h2 style="margin:20px 0 12px">Versions and browsers</h2>
+      <div class="table-wrap"><table><thead><tr><th>Version</th><th class="num">Installs</th><th>Last seen</th></tr></thead><tbody>${d.versions.map(v => `<tr><td class="mono">${esc(v.version || "?")}</td><td class="num">${fmt(v.installs)}</td><td>${ago(v.last)}</td></tr>`).join("")}</tbody></table></div>
+      <p class="note">${d.browsers.map(b => `${esc(b.browser || "Unknown")}: ${fmt(b.installs)}`).join(" · ")}</p></div>
+  </section>
+
+  <section class="card"><div class="card-head"><div><h2>Clients</h2><p class="sub">Each row is one install (anonymous ID). Click a row for its timeline.</p></div><span class="note">Latest 100 by last seen</span></div>
+    <div class="table-wrap"><table><thead><tr><th>Install</th><th>First seen</th><th>Last seen</th><th class="num">Active days</th><th class="num">AI requests</th><th class="num">CVs added</th><th class="num">PDFs</th><th class="num">Events</th><th>Version</th><th>Browser</th><th>Locale</th></tr></thead><tbody>
+    ${d.clients.slice(0, allClients ? 100 : 15).map(c => `<tr class="click" data-id="${esc(c.install)}" tabindex="0"><td class="mono">${short(c.install)}</td><td>${new Date(c.first_seen).toLocaleDateString()}</td><td>${ago(c.last_seen)}</td><td class="num">${fmt(c.activeDays)}</td><td class="num">${fmt(c.ai)}</td><td class="num">${fmt(c.cvs)}</td><td class="num">${fmt(c.pdfs)}</td><td class="num">${fmt(c.events)}</td><td class="mono">${esc(c.version)}</td><td>${esc(c.browser)}</td><td>${esc(c.locale)}</td></tr>`).join("")}</tbody></table></div>
+    ${d.clients.length > 15 ? `<button class="btn" id="moreClients" type="button" style="margin-top:10px">${allClients ? "Show fewer" : `Show all ${d.clients.length}`}</button>` : ""}</section>
+
+  <section class="card"><div class="card-head"><div><h2>Recent activity</h2><p class="sub">Latest events across all clients</p></div></div>
+    <div class="feed">${d.recent.map(e => `<div><time>${ago(e.at)}</time><span class="who">${short(e.install)}</span><span class="what">${esc(describe(e))}</span></div>`).join("")}</div></section>`;
+
+  if (h?.enabled && h.period.requests) colChart($("#chHosted"), h.daily, "requests", "Free AI requests");
+  lineChart($("#chActive"), d.daily, "active", [["active", "Active users"], ["installs", "New installs"], ["ai", "AI requests"]]);
+  colChart($("#chInstalls"), d.daily, "installs", "New installs");
+}
+
+/* ---------- free hosted AI ---------- */
+const money = n => "$" + (n >= 10 ? n.toFixed(0) : n >= 1 ? n.toFixed(2) : n.toFixed(3));
+function hostedSection(h) {
+  if (!h) return "";
+  if (!h.enabled) return `<section class="card"><div class="card-head"><div><h2>Free hosted AI</h2><p class="sub">Lets people use CV Tree without their own API key</p></div><span class="pill warn">! Off</span></div>
+    <p class="note">Set <span class="mono">OPENROUTER_API_KEY</span> on this server (a normal OpenRouter API key with credits) to turn it on. Limits: <span class="mono">HOSTED_DAILY_LIMIT</span> per person, <span class="mono">HOSTED_DAILY_BUDGET_USD</span> overall.</p></section>`;
+  const p = h.period, used = Math.min(1, h.today.cost / h.budget);
+  return `<section class="grid2">
+    <div class="card"><div class="card-head"><div><h2>Free hosted AI</h2><p class="sub">${esc(h.model)} · ${fmt(h.limit)} requests per person per day</p></div><span class="pill good">✓ On</span></div>
+      <div class="facts">
+        <div><span>Requests</span><b>${fmt(p.requests)}</b></div><div><span>People</span><b>${fmt(p.users)}</b></div>
+        <div><span>Spent this period</span><b>${money(p.cost)}</b></div><div><span>Avg per request</span><b>${p.requests ? money(p.cost / p.requests) : "–"}</b></div>
+        <div><span>Hit daily limit</span><b>${fmt(p.quotaHits)}</b></div><div><span>Failed</span><b>${fmt(p.failures)}</b></div>
+      </div>
+      <div class="sub" style="display:flex;justify-content:space-between"><span>Today: ${money(h.today.cost)} of ${money(h.budget)} daily cap</span><span>${pct(used)}</span></div>
+      <div style="height:8px;border-radius:4px;background:var(--grid);margin-top:6px;overflow:hidden"><div style="height:100%;width:${(used * 100).toFixed(1)}%;background:${used >= .9 ? "var(--bad)" : used >= .7 ? "var(--warn)" : "var(--series)"}"></div></div>
+      ${p.quotaHits ? `<p class="note" style="margin-top:12px">People hit their daily limit ${fmt(p.quotaHits)} times. If that's often, raise <span class="mono">HOSTED_DAILY_LIMIT</span>.</p>` : ""}</div>
+    <div class="card"><div class="card-head"><div><h2>Free AI requests per day</h2><p class="sub">Heaviest users by cost below</p></div></div>
+      ${p.requests ? `<div class="chart" id="chHosted"></div>` : `<p class="empty">No free AI requests in this period.</p>`}
+      ${h.top.filter(t => t.requests).length ? `<div class="table-wrap" style="margin-top:12px"><table><thead><tr><th>Install</th><th class="num">Requests</th><th class="num">Cost</th><th class="num">Hit limit</th></tr></thead><tbody>
+      ${h.top.filter(t => t.requests).slice(0, 5).map(t => `<tr class="click" data-id="${esc(t.install)}" tabindex="0"><td class="mono">${short(t.install)}</td><td class="num">${fmt(t.requests)}</td><td class="num">${money(t.cost)}</td><td class="num">${fmt(t.quotaHits)}</td></tr>`).join("")}</tbody></table></div>` : ""}</div>
+  </section>`;
+}
+
+/* ---------- client drill-down ---------- */
+document.addEventListener("click", async e => {
+  const row = e.target.closest("tr.click"); if (!row) return;
+  const res = await fetch(`/admin/api/client?id=${encodeURIComponent(row.dataset.id)}`);
+  const c = await res.json(), i = c.install;
+  if (!i) {
+    $("#clientTitle").textContent = `Install ${short(row.dataset.id)}`;
+    $("#clientBody").innerHTML = `<p class="note">This install has used the free AI but sends no usage stats (they're turned off), so there's no timeline.</p><p class="note mono">${esc(row.dataset.id)}</p>`;
+    return $("#clientDlg").showModal();
+  }
+  $("#clientTitle").textContent = `Install ${short(i.install)}`;
+  $("#clientBody").innerHTML = `<div class="facts">
+      <div><span>First seen</span><b>${new Date(i.first_seen).toLocaleString()}</b></div><div><span>Last seen</span><b>${ago(i.last_seen)}</b></div>
+      <div><span>Events</span><b>${fmt(i.events)}</b></div><div><span>Version · browser</span><b>${esc(i.version)} · ${esc(i.browser)}</b></div><div><span>Locale</span><b>${esc(i.locale)}</b></div></div>
+    <p class="note mono">${esc(i.install)}</p>
+    <div class="feed" style="max-height:none">${c.events.filter(e => e.type !== "active").map(e => `<div><time>${new Date(e.at).toLocaleDateString(undefined, { day: "numeric", month: "short" })}</time><span class="who">${new Date(e.at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}</span><span class="what">${esc(describe(e))}</span></div>`).join("")}</div>`;
+  $("#clientDlg").showModal();
+});
+document.addEventListener("keydown", e => { if (e.key === "Enter" && e.target.matches("tr.click")) e.target.click(); });
+$("#clientClose").addEventListener("click", () => $("#clientDlg").close());
+
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => { days = Number(b.dataset.days); try { localStorage.setItem("cvtree-days", days); } catch {} load(); }));
+$("#refresh").addEventListener("click", load);
+document.addEventListener("click", e => { if (e.target.closest("#moreClients")) { allClients = !allClients; render(); } });
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => data && render(), 150); });
+load();
+setInterval(load, 5 * 60e3);
+</script>
+</body>
+</html>

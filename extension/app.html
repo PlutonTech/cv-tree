@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CV Tree</title>
+<link rel="icon" href="icons/icon32.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="app.css">
+<link rel="stylesheet" href="templates.css">
+</head>
+<body>
+<div class="shell">
+  <aside class="side" id="side">
+    <a class="logo" href="#dashboard" aria-label="CV Tree home"><span class="mark" data-i="logo"></span><span>CV Tree</span></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#dashboard" data-nav="dashboard"><i data-i="home"></i>Dashboard</a>
+      <a href="#cvs" data-nav="cvs"><i data-i="file"></i>My CVs</a>
+      <a href="#match" data-nav="match"><i data-i="search"></i>Match a Job</a>
+      <a href="#letters" data-nav="letters"><i data-i="mail"></i>Cover Letters</a>
+      <a href="#profile" data-nav="profile"><i data-i="briefcase"></i>Experience &amp; Projects</a>
+      <a href="#hub" data-nav="hub"><i data-i="link"></i>Link Hub</a>
+    </nav>
+    <div class="side-foot">
+      <div class="privacy"><i data-i="lock"></i><div><b>Your data is private</b><span>Your CVs and information stay in this browser. Only you can see them.</span></div></div>
+    </div>
+  </aside>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <div class="main">
+    <header class="topbar">
+      <button class="iconbtn only-mobile" id="btnMenu" type="button" aria-label="Open menu"><i data-i="menu"></i></button>
+      <div class="grow"></div>
+      <button class="iconbtn" id="btnTheme" type="button" aria-label="Switch theme"><i data-i="sun"></i></button>
+      <div class="pop-wrap">
+        <button class="iconbtn" id="btnBell" type="button" aria-label="Notifications" aria-expanded="false"><i data-i="bell"></i><span class="dot" id="bellDot" hidden></span></button>
+        <div class="pop" id="bellPop" hidden></div>
+      </div>
+      <div class="pop-wrap">
+        <button class="account" id="btnAccount" type="button" aria-expanded="false"><span class="avatar sm" id="avatarTop">CV</span><span class="acct-name" id="acctName">Your profile</span><i data-i="chevron"></i></button>
+        <div class="pop menu" id="acctPop" hidden>
+          <a href="#profile"><i data-i="briefcase"></i>Experience &amp; Projects</a>
+          <a href="#settings"><i data-i="settings"></i>Settings</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="content">
+      <div class="banner" id="keyBanner" hidden><i data-i="sparkle"></i><span>Add a free OpenRouter API key to get real match scores and write new CVs.</span><a class="btn sm primary" href="#settings">Open settings</a></div>
+
+      <!-- WELCOME -->
+      <section class="view" id="v-welcome" hidden>
+        <div class="hello">
+          <p class="greet">Welcome to CV Tree</p>
+          <h1>Let's get you set up</h1>
+          <p class="sub">A few quick steps. Your CVs stay in this browser, and you can change everything later in Settings.</p>
+        </div>
+        <ol class="setup" id="welcomeSteps"></ol>
+        <div class="card pad" id="welcomeUsage" hidden>
+          <label class="switch" for="wUsage"><input id="wUsage" type="checkbox"><span></span><b>Share anonymous usage statistics</b></label>
+          <p class="tiny" style="margin:8px 0 0">Helps improve CV Tree: which features get used, never your CVs, letters, name or job descriptions. You can change this in Settings.</p>
+        </div>
+        <div class="row"><button class="btn primary lg" id="btnWelcomeDone" type="button">Go to my dashboard</button><a class="btn link" id="welcomePrivacy" href="#" target="_blank" rel="noopener" hidden>Privacy policy</a></div>
+      </section>
+
+      <!-- DASHBOARD -->
+      <section class="view" id="v-dashboard" hidden>
+        <div class="setup-banner" id="setupBanner" hidden><i data-i="sparkle"></i><div><b>Finish setting up CV Tree</b><br><span class="tiny" style="margin:0">Add your CVs, check the AI, and learn how to use it on job sites.</span></div><a class="btn primary" href="#welcome">Continue setup</a></div>
+        <div class="hello">
+          <p class="greet" id="greet">Good morning,</p>
+          <h1>Build your next opportunity</h1>
+          <p class="sub">Manage your CVs, match with jobs, and showcase your skills, all in one place.</p>
+        </div>
+        <div class="tiles">
+          <a class="tile" href="#cvs"><span class="tile-icon green"><i data-i="file"></i></span><h3>My CVs</h3><p>Manage your CVs, create new ones, and keep your library organized.</p><i data-i="arrow" class="go"></i></a>
+          <a class="tile" href="#match"><span class="tile-icon slate"><i data-i="search"></i></span><h3>Match a Job</h3><p>Paste a job posting and get AI match scores for your CVs.</p><i data-i="arrow" class="go"></i></a>
+          <a class="tile" href="#profile"><span class="tile-icon blue"><i data-i="briefcase"></i></span><h3>Experience &amp; Projects</h3><p>Add your skills, work history, education and more.</p><i data-i="arrow" class="go"></i></a>
+          <a class="tile" href="#hub"><span class="tile-icon green"><i data-i="link"></i></span><h3>Link Hub</h3><p>Create a Linktree-style page for your CVs.</p><i data-i="arrow" class="go"></i></a>
+        </div>
+        <div class="section-head">
+          <div><h2>My CVs</h2><p class="sub">Your saved CVs, one for each role.</p></div>
+          <a class="more" href="#cvs">View all <i data-i="arrow"></i></a>
+        </div>
+        <div class="card list" id="dashCvs"></div>
+        <div class="stats" id="stats"></div>
+      </section>
+
+      <!-- MY CVS -->
+      <section class="view" id="v-cvs" hidden>
+        <div class="page-head">
+          <div><h1>My CVs</h1><p class="sub">Manage your CVs, create new ones, and keep your library organized.</p></div>
+          <button class="btn primary" id="btnNew" type="button"><i data-i="plus"></i>Add CV</button>
+        </div>
+        <div id="cvExamples"></div>
+        <div class="card table-card" id="cvTable"></div>
+      </section>
+
+      <!-- COVER LETTERS -->
+      <section class="view" id="v-letters" hidden>
+        <div class="page-head">
+          <div><h1>Cover Letters</h1><p class="sub">Letters written for specific jobs, in the same templates as your CVs so they match when you send them together.</p></div>
+          <a class="btn primary" href="#match"><i data-i="plus"></i>Write a cover letter</a>
+        </div>
+        <div class="card table-card" id="letterTable"></div>
+      </section>
+
+      <!-- MATCH -->
+      <section class="view" id="v-match" hidden>
+        <div class="page-head"><div><h1>Match a Job</h1><p class="sub">Paste a job posting and get AI match scores for your saved CVs. On job sites, the CV Tree button fills this in for you.</p></div></div>
+        <div class="match-grid">
+          <div class="card pad">
+            <div class="from" id="fromPage" hidden></div>
+            <h3 class="step">1. Paste the job description</h3>
+            <textarea id="jd" rows="13" maxlength="20000" placeholder="Senior Frontend Engineer&#10;&#10;We're looking for a Senior Frontend Engineer with 3+ years of experience in React, TypeScript and modern web technologies…" aria-label="Job description"></textarea>
+            <div class="hint-row"><span>Paste the full description, or <label class="inline-link" for="jdFile">upload it as a PDF or Word file</label>.</span><span id="jdCount">0/20000</span></div>
+            <input id="jdFile" type="file" hidden>
+            <label for="jdLink" class="field-label">Job link <span>optional</span></label>
+            <input id="jdLink" type="url" placeholder="https://boards.greenhouse.io/acme/jobs/123">
+            <h3 class="step">2. Match with your CVs</h3>
+            <button class="btn primary wide lg" id="btnMatch" type="button"><i data-i="sparkle"></i>Analyze job match</button>
+            <div class="row center"><button class="btn link" id="btnGen" type="button">Write a new CV</button><span class="tiny" style="margin:0">or</span><button class="btn link" id="btnLetter" type="button">Write a cover letter</button><button class="btn ghost sm" id="btnStop" type="button" hidden>Stop</button></div>
+            <p class="note" id="matchNote"></p>
+          </div>
+          <div class="card pad results">
+            <div class="results-head">
+              <div><h3>Results</h3><p class="tiny" id="resultsMeta">No analysis yet</p></div>
+              <select id="sortRes" aria-label="Sort results"><option value="score">Best match first</option><option value="recent">Recently updated</option></select>
+            </div>
+            <div id="matchOut">
+              <div class="empty"><i data-i="search"></i><p>Paste a job description and click <b>Analyze job match</b>. Each saved CV gets a score out of 100, with what fits and what's missing.</p></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOCUMENT -->
+      <section class="view" id="v-doc" hidden>
+        <a class="back" href="#match" id="docBack"><i data-i="back"></i><span>Back to results</span></a>
+        <div class="page-head">
+          <div><p class="eyebrow" id="docEyebrow">New draft</p><h1 id="docTitle">CV</h1></div>
+          <div class="row">
+            <button class="btn" id="btnCopy" type="button"><i data-i="copy"></i>Copy</button>
+            <button class="btn" id="btnDl" type="button"><i data-i="download"></i><span>Download .md</span></button>
+            <button class="btn" id="btnPdf" type="button"><i data-i="download"></i>Download PDF</button>
+            <button class="btn" id="btnEditDoc" type="button"><i data-i="pencil"></i><span>Edit</span></button>
+            <button class="btn" id="btnLetterFromCv" type="button" hidden><i data-i="mail"></i>Cover letter</button>
+            <button class="btn primary" id="btnSaveGen" type="button"><i data-i="check"></i>Save to My CVs</button>
+          </div>
+        </div>
+        <div class="letter-opts" id="letterOpts" hidden>
+          <div class="fld"><label for="ltTone">Tone</label><select id="ltTone"><option value="professional">Professional</option><option value="warm">Warm and enthusiastic</option><option value="concise">Short and direct</option></select></div>
+          <div class="fld"><label for="ltLength">Length</label><select id="ltLength"><option value="short">Short (about 180 words)</option><option value="standard">Standard (about 280 words)</option><option value="long">Detailed (about 380 words)</option></select></div>
+          <div class="fld"><label for="ltBase">Based on</label><select id="ltBase"></select></div>
+          <button class="btn soft" id="btnRewrite" type="button"><i data-i="sparkle"></i>Rewrite</button>
+        </div>
+        <div class="tpl-picker" id="tplPicker" role="group" aria-label="Template"></div>
+        <div class="examples" id="fmtNotice" hidden><i data-i="sparkle"></i><div><b>Tidy this CV for the templates</b><span>Text from PDF and Word files loses the split between jobs and dates. Format it with AI to fix the layout; your wording stays the same.</span></div><button class="btn primary" id="btnFormat" type="button">Format with AI</button></div>
+        <div class="doc-status" id="docStatus"></div>
+        <article class="paper" id="docBody"></article>
+      </section>
+
+      <!-- PROFILE -->
+      <section class="view" id="v-profile" hidden>
+        <div class="page-head">
+          <div><h1>Experience &amp; Projects</h1><p class="sub">Add your skills, work history and education. The AI only writes from what you save here.</p></div>
+          <span class="saved" id="profNote"></span>
+        </div>
+        <div class="subtabs" role="tablist" aria-label="Profile sections">
+          <button data-sub="about" type="button">About</button>
+          <button data-sub="skills" type="button">Skills</button>
+          <button data-sub="work" type="button">Work History</button>
+          <button data-sub="education" type="button">Education</button>
+          <button data-sub="github" type="button">GitHub</button>
+          <button data-sub="linkedin" type="button">LinkedIn</button>
+        </div>
+        <div class="profile-grid">
+          <div class="card pad">
+            <div class="sub-pane" data-pane="about">
+              <h3>About you</h3><p class="tiny">This goes at the top of every CV.</p>
+              <div class="fields">
+                <label for="pName" class="field-label">Full name</label><input id="pName" type="text" data-pf="name" autocomplete="name">
+                <label for="pHeadline" class="field-label">Headline</label><input id="pHeadline" type="text" data-pf="headline" placeholder="Software Engineer · GIS Specialist">
+                <label for="pContact" class="field-label">Contact line <span>email, phone, city, portfolio</span></label><input id="pContact" type="text" data-pf="contact" placeholder="you@email.com · Lagos, NG · yoursite.dev">
+              </div>
+            </div>
+            <div class="sub-pane" data-pane="skills">
+              <h3>Skills</h3><p class="tiny">Add your technical and soft skills. Use tags to keep them organized.</p>
+              <form class="row nowrap" id="skillForm"><div class="search"><i data-i="search"></i><input id="skillInput" type="text" placeholder="Add a skill, or several separated by commas" aria-label="Add a skill" autocomplete="off"></div><button class="btn primary" type="submit"><i data-i="plus"></i>Add Skill</button></form>
+              <h4>Your Skills</h4>
+              <div class="chips big" id="skillChips"></div>
+            </div>
+            <div class="sub-pane" data-pane="work">
+              <h3>Work History</h3><p class="tiny">Role, company, dates, and what you did. Numbers help: “cut load time by 40%”.</p>
+              <textarea id="pExp" data-pf="experience" rows="16" class="mono" placeholder="Frontend Engineer, Acme Ltd (Jan 2023 – present)&#10;- Rebuilt checkout in React; conversion up 12%&#10;- …" aria-label="Work history"></textarea>
+              <p class="tiny">Tip: <a href="#profile/linkedin">import from LinkedIn</a> to fill this in.</p>
+            </div>
+            <div class="sub-pane" data-pane="education">
+              <h3>Education</h3><p class="tiny">Degrees, courses and certifications, one per line.</p>
+              <textarea id="pEdu" data-pf="education" rows="8" placeholder="BSc Geography, University of Lagos, 2021&#10;AWS Certified Cloud Practitioner, 2024" aria-label="Education"></textarea>
+            </div>
+            <div class="sub-pane" data-pane="github"><div id="ghCard"></div><div class="divider"></div>
+              <div class="row between"><h3>All projects</h3><button class="btn sm" id="btnAddProj" type="button"><i data-i="plus"></i>Add a project</button></div>
+              <p class="tiny">Ticked projects are what the AI can cite. Keep the ones that show your best work.</p>
+              <div id="projList"></div>
+            </div>
+            <div class="sub-pane" data-pane="linkedin">
+              <div class="row between"><h3>LinkedIn</h3><span class="pill" id="liState">Not imported</span></div>
+              <p class="tiny">LinkedIn doesn't share your experience with other apps, so CV Tree reads it from your profile page instead.</p>
+              <ol class="steps">
+                <li>Click <b>Connect LinkedIn</b>. Your profile opens in a new tab.</li>
+                <li>Click the CV Tree button in the corner of that page, then <b>Import this profile</b>.</li>
+                <li>For every role, open “Show all experiences” on LinkedIn and import that page too.</li>
+              </ol>
+              <button class="btn primary" id="btnLi" type="button"><i data-i="linkedin"></i>Connect LinkedIn</button>
+              <details><summary>Or paste it yourself</summary>
+                <div class="fields">
+                  <label for="liUrl" class="field-label">Profile link</label><input id="liUrl" type="url" data-pf="liUrl" placeholder="https://www.linkedin.com/in/your-name">
+                  <label for="liText" class="field-label">About and Experience sections</label><textarea id="liText" data-pf="liText" rows="6"></textarea>
+                </div>
+              </details>
+            </div>
+          </div>
+          <div class="card pad">
+            <div class="row between"><h3>Recent Projects</h3><a class="more" href="#profile/github">View all</a></div>
+            <div id="recentProj"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HUB -->
+      <section class="view" id="v-hub" hidden>
+        <div class="page-head"><div><h1>Link Hub</h1><p class="sub">A Linktree-style page for your CVs. Give each CV a public link, then copy the list into Linktree.</p></div></div>
+        <div class="hub-grid">
+          <div class="card pad">
+            <h3>Your CV Links</h3>
+            <div id="hubList"></div>
+            <button class="btn primary wide" id="btnCopyLinks" type="button"><i data-i="link"></i>Copy links for Linktree</button>
+          </div>
+          <div class="card pad">
+            <h3>Preview</h3>
+            <div class="phone"><div class="screen" id="hubPreview"></div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="view" id="v-settings" hidden>
+        <div class="page-head"><div><h1>Settings</h1><p class="sub">Everything is stored in this browser only. Your API key is only sent to the AI provider you pick.</p></div></div>
+        <div class="settings-grid">
+          <div class="card pad fields">
+            <h3>AI provider</h3>
+            <div class="seg" role="radiogroup" aria-label="AI provider">
+              <label id="cvtreeOpt"><input type="radio" name="provider" value="cvtree">CV Tree free AI</label>
+              <label><input type="radio" name="provider" value="openrouter">My OpenRouter key</label>
+              <label><input type="radio" name="provider" value="anthropic">Anthropic (Claude)</label>
+            </div>
+            <div class="fields" id="cvFields">
+              <p class="tiny" style="margin:8px 0 0">No key needed. CV Tree's free AI runs on Claude with a daily allowance per person. <span id="cvQuota"></span> For unlimited use, choose <b>My OpenRouter key</b> and add a free key.</p>
+            </div>
+            <div class="fields" id="orFields">
+              <label for="orKey" class="field-label">OpenRouter API key <span>free at <a href="https://openrouter.ai/settings/keys" target="_blank" rel="noopener">openrouter.ai/settings/keys</a></span></label>
+              <div class="row nowrap"><input id="orKey" type="password" autocomplete="off" placeholder="sk-or-v1-…"><button class="btn" data-show="orKey" type="button">Show</button></div>
+              <label for="orModel" class="field-label">Model <span id="orModelsNote">free models cost nothing</span></label>
+              <select id="orModel"><option value="openrouter/free">Any free model: openrouter/free (recommended)</option></select>
+              <label for="orCustom" class="field-label">Or type any OpenRouter model ID <span>paid models need credits</span></label>
+              <input id="orCustom" type="text" autocomplete="off" placeholder="e.g. anthropic/claude-sonnet-5.5">
+              <p class="tiny">Claude models need OpenRouter credits and a normal API key (not a management key). Free models have a daily request limit. If you get a privacy error, allow free model providers at <a href="https://openrouter.ai/settings/privacy" target="_blank" rel="noopener">openrouter.ai/settings/privacy</a>.</p>
+            </div>
+            <div class="fields" id="anFields">
+              <label for="sKey" class="field-label">Claude API key <span>from <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a>, billed to your account</span></label>
+              <div class="row nowrap"><input id="sKey" type="password" autocomplete="off" placeholder="sk-ant-…"><button class="btn" data-show="sKey" type="button">Show</button></div>
+              <label for="sModel" class="field-label">Model</label>
+              <select id="sModel">
+                <option value="claude-opus-5-5">Claude Opus 5.5 (best quality)</option>
+                <option value="claude-sonnet-5-5">Claude Sonnet 5.5 (faster, cheaper)</option>
+                <option value="claude-haiku-5-5">Claude Haiku 5.5 (fastest, cheapest)</option>
+              </select>
+            </div>
+            <div class="row"><button class="btn primary" id="btnSaveKey" type="button">Save</button><button class="btn" id="btnTestKey" type="button">Check key</button><span class="note" id="keyNote"></span></div>
+          </div>
+          <div class="card pad fields">
+            <h3>Widget</h3>
+            <label class="switch" for="sShow"><input id="sShow" type="checkbox"><span></span>Show the CV Tree button automatically on job postings</label>
+            <p class="tiny">You can always open it from the CV Tree icon in the browser toolbar, on any page.</p>
+            <p class="field-label">Hidden on these sites</p>
+            <div id="hiddenSites" class="chips"></div>
+          </div>
+          <div class="card pad fields" id="usageCard" hidden>
+            <h3>Usage statistics</h3>
+            <label class="switch" for="sUsage"><input id="sUsage" type="checkbox"><span></span>Share anonymous usage statistics</label>
+            <p class="tiny"><a id="privacyLink" href="#" target="_blank" rel="noopener">Read the privacy policy</a></p>
+            <p class="tiny">Helps improve CV Tree. Sent: which features you use, AI model names, response times and error codes, job-site domains (like linkedin.com) and template names, under a random install ID.<br><b>Never sent:</b> your CVs, cover letters, name, contact details, profile, job descriptions or API keys.</p>
+          </div>
+          <div class="card pad fields">
+            <h3>Appearance</h3>
+            <div class="seg" role="radiogroup" aria-label="Theme">
+              <label><input type="radio" name="theme" value="system">System</label>
+              <label><input type="radio" name="theme" value="light">Light</label>
+              <label><input type="radio" name="theme" value="dark">Dark</label>
+            </div>
+          </div>
+          <div class="card pad fields">
+            <h3>Backup</h3>
+            <p class="tiny">Backups include your CVs and profile, not your API key or GitHub sign-in.</p>
+            <div class="row"><button class="btn" id="btnExport" type="button"><i data-i="download"></i>Export backup</button><label class="btn" for="importFile">Import backup</label><input id="importFile" type="file" accept="application/json" hidden></div>
+            <p class="note" id="backupNote"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<div class="menu floating" id="rowMenu" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<dialog id="dlg">
+  <form method="dialog" id="cvForm">
+    <div class="row between"><h2 id="dlgTitle">Add a CV</h2><button class="iconbtn" value="cancel" type="submit" formnovalidate aria-label="Close"><i data-i="x"></i></button></div>
+    <label for="fTitle" class="field-label">Name <span>what you'll recognise it by, e.g. “Frontend Engineer”</span></label><input id="fTitle" type="text" required>
+    <label for="fRoles" class="field-label">Tags <span>roles or skills, comma separated</span></label><input id="fRoles" type="text" placeholder="React, TypeScript, Web">
+    <label for="fLink" class="field-label">Public link <span>optional, shown on the Link Hub</span></label><input id="fLink" type="url" placeholder="https://drive.google.com/…">
+    <div class="upload" id="cvDrop"><span class="ic green"><i data-i="upload"></i></span><div><b>Upload your CV</b><span>PDF or Word (.docx). Drop it here; the text is read in your browser.</span></div><label class="btn sm" for="cvFile">Choose file</label><input id="cvFile" type="file" hidden></div>
+    <p class="note" id="cvFileNote"></p>
+    <label for="fBody" class="field-label">CV text <span>filled in from your file, or paste it</span></label><textarea id="fBody" rows="14" class="mono" required></textarea>
+    <label for="fNotes" class="field-label">Notes to self <span>where you've sent it, what to change</span></label><input id="fNotes" type="text">
+    <div class="row end"><button class="btn" value="cancel" type="submit" formnovalidate>Cancel</button><button class="btn primary" value="save" type="submit">Save CV</button></div>
+  </form>
+</dialog>
+
+<dialog id="pdlg">
+  <form method="dialog" id="projForm">
+    <div class="row between"><h2 id="pdlgTitle">Add a project</h2><button class="iconbtn" value="cancel" type="submit" formnovalidate aria-label="Close"><i data-i="x"></i></button></div>
+    <label for="gName" class="field-label">Project name</label><input id="gName" type="text" required>
+    <label for="gUrl" class="field-label">Repository or live link</label><input id="gUrl" type="url">
+    <label for="gReadme" class="field-label">README or description</label><textarea id="gReadme" rows="12" class="mono" required></textarea>
+    <div class="row end"><button class="btn" value="cancel" type="submit" formnovalidate>Cancel</button><button class="btn primary" value="save" type="submit">Save project</button></div>
+  </form>
+</dialog>
+
+<script type="module" src="app.js"></script>
+</body>
+</html>
